@@ -14,6 +14,7 @@ export async function GET() {
     });
     return NextResponse.json(chats);
   } catch (error) {
+    console.error('Error fetching chats:', error);
     return NextResponse.json({ error: 'Error fetching chats' }, { status: 500 });
   }
 }
@@ -22,10 +23,16 @@ export async function GET() {
 export async function POST() {
   try {
     const chat = await prisma.chat.create({
-      data: {},
+      data: {
+        modelProvider: 'openai',
+        modelName: 'gpt-3.5-turbo',
+      },
     });
+    
+    console.log('Created new chat:', chat);
     return NextResponse.json(chat);
   } catch (error) {
+    console.error('Error creating chat:', error);
     return NextResponse.json(
       { error: 'Error creating chat' },
       { status: 500 }

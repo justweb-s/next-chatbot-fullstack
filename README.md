@@ -1,95 +1,133 @@
-# Next.js Chatbot with MySQL and OpenAI
+# Next.js AI Chatbot with Multiple Providers
 
-Un'applicazione chatbot moderna costruita con Next.js, che utilizza MySQL per la persistenza dei dati e l'API di OpenAI per generare risposte intelligenti.
+A modern chatbot application built with Next.js 13+, featuring support for multiple AI providers (OpenAI, Anthropic, Google), real-time chat functionality, and image generation capabilities.
 
-## Caratteristiche
+## Features
 
-- 🎨 Interfaccia utente moderna e reattiva con Tailwind CSS
-- 💬 Chat in tempo reale con risposte AI
-- 📚 Cronologia delle chat salvata in MySQL
-- 🤖 Integrazione con OpenAI GPT-3.5
-- 📱 Design responsive
-- 🔄 Supporto per conversazioni multiple
+- 🤖 Multiple AI Provider Support:
+  - OpenAI (GPT-3.5, GPT-4, DALL-E 3)
+  - Anthropic (Claude)
+  - Google (Gemini)
+- 💬 Real-time Chat Interface
+- 🎨 Image Generation with DALL-E 3
+- 🔐 Secure API Key Management
+- 📱 Responsive Design
+- 🎛️ Configurable AI Parameters:
+  - Temperature
+  - Max Tokens
+  - System Prompts
+- 🔄 Chat History Management
+- 🎯 Collapsible Settings Panel
 
-## Tecnologie Utilizzate
+## Prerequisites
 
-- Next.js 13+ (App Router)
-- TypeScript
-- MySQL
-- Prisma ORM
-- OpenAI API
-- Tailwind CSS
+- Node.js 18+ and npm
+- MySQL Database
+- API Keys for the AI providers you want to use:
+  - OpenAI API Key
+  - Anthropic API Key
+  - Google AI API Key
 
-## Prerequisiti
+## Installation
 
-- Node.js 16.8 o superiore
-- MySQL (XAMPP o server MySQL standalone)
-- Account OpenAI con API key
-
-## Installazione
-
-1. Clona il repository:
+1. Clone the repository:
 ```bash
-git clone https://github.com/justweb-s/next-chatbot-fullstack.git
+git clone <repository-url>
 cd next-chatbot-fullstack
 ```
 
-2. Installa le dipendenze:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Crea un file `.env` nella root del progetto:
+3. Set up your environment variables by creating a `.env` file:
 ```env
-DATABASE_URL="mysql://root:@localhost:3306/chat_db2"
-OPENAI_API_KEY="your-openai-api-key"
+DATABASE_URL="mysql://user:password@localhost:3306/chatbot"
 ```
 
-4. Inizializza il database:
+4. Initialize the database:
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
-5. Avvia il server di sviluppo:
+5. Start the development server:
 ```bash
 npm run dev
 ```
 
-L'applicazione sarà disponibile all'indirizzo `http://localhost:3000`
+The application will be available at `http://localhost:3000`.
 
-## Struttura del Progetto
+## Database Schema
 
-```
-src/
-├── app/                    # App Router di Next.js
-│   ├── api/               # API Routes
-│   ├── layout.tsx         # Layout principale
-│   └── page.tsx           # Pagina principale
-├── components/            # Componenti React
-│   ├── ChatContainer.tsx  # Contenitore principale della chat
-│   ├── ChatInput.tsx      # Input per i messaggi
-│   ├── ChatList.tsx       # Lista delle chat
-│   └── ChatMessage.tsx    # Componente messaggio
-├── lib/                   # Utility e configurazioni
-│   ├── prisma.ts         # Client Prisma
-│   └── openai.ts         # Configurazione OpenAI
-└── styles/               # Stili globali
-    └── globals.css       # CSS globale con Tailwind
-```
+The application uses a MySQL database with Prisma as the ORM. The schema includes:
 
-## Funzionalità
+- `Chat`: Stores chat sessions and their configurations
+- `Message`: Stores individual messages within chats
 
-- **Chat Multiple**: Possibilità di avere multiple conversazioni
-- **Persistenza**: Tutti i messaggi vengono salvati nel database MySQL
-- **Risposte AI**: Integrazione con OpenAI per risposte intelligenti
-- **UI Moderna**: Interface utente pulita e moderna con Tailwind CSS
-- **Responsive**: Funziona su desktop e dispositivi mobili
+## Usage
 
-## Licenza
+1. Create a New Chat:
+   - Click the "New Chat" button in the sidebar
 
-MIT
+2. Configure AI Settings:
+   - Select your preferred AI provider
+   - Choose a model
+   - Enter your API key
+   - Adjust temperature and max tokens
+   - Set a custom system prompt if desired
 
-## Autore
+3. Start Chatting:
+   - Type your message in the input field
+   - Press Enter or click the send button
+   - View AI responses in real-time
 
-[justweb-s](https://github.com/justweb-s)
+4. Generate Images:
+   - Select OpenAI as the provider
+   - Choose DALL-E 3 as the model
+   - Enter a descriptive prompt
+   - View the generated image in the chat
+
+## Troubleshooting
+
+### Common Issues
+
+1. Database Connection:
+   - Verify your DATABASE_URL in .env
+   - Ensure MySQL server is running
+   - Check database permissions
+
+2. API Keys:
+   - Verify API keys are correct
+   - Check provider-specific requirements
+   - Ensure sufficient API credits
+
+3. Message Not Saving:
+   - Check database connection
+   - Verify Prisma schema is synced
+   - Look for error messages in console
+
+### Error Messages
+
+- "Invalid API Key": Check and update your provider API key
+- "Failed to fetch messages": Verify database connection
+- "No response generated": Check API provider status
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Next.js Team
+- Prisma Team
+- OpenAI, Anthropic, and Google AI Teams

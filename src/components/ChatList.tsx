@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 
 interface Chat {
   id: string;
+  modelProvider: string;
+  modelName: string;
   messages: Array<{
     content: string;
     isUser: boolean;
@@ -17,7 +19,7 @@ interface ChatListProps {
   selectedChatId: string | null;
 }
 
-export function ChatList({ onSelectChat, selectedChatId }: ChatListProps) {
+export default function ChatList({ onSelectChat, selectedChatId }: ChatListProps) {
   const [chats, setChats] = useState<Chat[]>([]);
 
   useEffect(() => {
@@ -34,28 +36,51 @@ export function ChatList({ onSelectChat, selectedChatId }: ChatListProps) {
     }
   };
 
+  const createNewChat = async () => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+      });
+      const newChat = await response.json();
+      setChats(prev => [newChat, ...prev]);
+      onSelectChat(newChat.id);
+    } catch (error) {
+      console.error('Error creating new chat:', error);
+    }
+  };
+
   return (
     <div className="w-64 border-r border-gray-300 overflow-y-auto">
       <div className="p-4">
+        <button
+          onClick={createNewChat}
+          className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-4"
+        >
+          New Chat
+        </button>
+
         <h2 className="text-lg font-semibold mb-4">Chat History</h2>
         <div className="space-y-2">
           {chats.map((chat) => {
-            const firstMessage = chat.messages[0]?.content || 'New Chat';
-            const preview = firstMessage.length > 30
-              ? firstMessage.substring(0, 30) + '...'
-              : firstMessage;
+            const preview = chat.messages && chat.messages.length > 0
+              ? chat.messages[0].content.length > 30
+                ? chat.messages[0].content.substring(0, 30) + '...'
+                : chat.messages[0].content
+              : 'New Chat';
 
             return (
               <button
                 key={chat.id}
                 onClick={() => onSelectChat(chat.id)}
-                className={`w-full p-3 text-left rounded-lg hover:bg-gray-100 transition-colors ${
-                  selectedChatId === chat.id ? 'bg-blue-50 border border-blue-200' : ''
+                className={`w-full text-left p-2 rounded ${
+                  selectedChatId === chat.id
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'hover:bg-gray-100'
                 }`}
               >
                 <p className="font-medium text-sm">{preview}</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {new Date(chat.createdAt).toLocaleDateString()}
+                  {chat.modelProvider || 'Not configured'} {chat.modelName ? `- ${chat.modelName}` : ''}
                 </p>
               </button>
             );
